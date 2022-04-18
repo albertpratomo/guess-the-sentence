@@ -1,0 +1,69 @@
+<template>
+    <div class="flex flex-col gap-8 container text-center">
+        <template v-if="!sentenceSubmitted">
+            Input your sentence
+
+            <input
+                v-model="sentence"
+                type="text"
+                @keyup.enter="submitSentence"
+            >
+        </template>
+
+        <template v-else>
+            Guess the sentence
+
+            <div class="flex flex-wrap gap-4 items-center justify-center">
+                <div
+                    v-for="(word, i) in sentenceSplitted"
+                    :key="i"
+                    ref="inputs"
+                >
+                    <template v-if="i < index">
+                        {{ sentenceSplitted[i] }}
+                    </template>
+
+                    <input
+                        v-else
+                        type="text"
+                        class="bg-slate-100 w-36 focus:bg-white"
+                        @keyup.enter="submitAnswer"
+                    >
+                </div>
+            </div>
+
+            <div v-if="answers.length >= sentenceSplitted.length">
+                Your answer: {{ answers.join(' ') }}
+            </div>
+        </template>
+    </div>
+</template>
+
+<script setup>
+import {computed, nextTick, ref} from 'vue';
+
+const sentence = ref();
+const sentenceSubmitted = ref(false);
+const sentenceSplitted = computed(() => sentence.value.split(' '));
+const answers = ref();
+const index = ref(1);
+const inputs = ref();
+
+async function submitSentence() {
+    sentenceSubmitted.value = true;
+
+    answers.value = [sentenceSplitted.value[0]];
+
+    await nextTick();
+
+    inputs.value[index.value].firstChild.focus();
+}
+
+function submitAnswer(e) {
+    answers.value.push(e.target.value);
+
+    index.value++;
+
+    inputs.value[index.value].firstChild.focus();
+}
+</script>
