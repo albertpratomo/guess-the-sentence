@@ -27,12 +27,13 @@
                         v-else
                         type="text"
                         class="bg-slate-100 w-36 focus:bg-white"
+                        :disabled="!!(i > index)"
                         @keyup.enter="submitAnswer"
                     >
                 </div>
             </div>
 
-            <div v-if="answers.length >= sentenceSplitted.length">
+            <div v-if="completed">
                 Your answer: {{ answers.join(' ') }}
             </div>
         </template>
@@ -48,6 +49,7 @@ const sentenceSplitted = computed(() => sentence.value.split(' '));
 const answers = ref();
 const index = ref(1);
 const inputs = ref();
+const completed = computed(() => answers.value.length >= sentenceSplitted.value.length);
 
 async function submitSentence() {
     sentenceSubmitted.value = true;
@@ -59,11 +61,15 @@ async function submitSentence() {
     inputs.value[index.value].firstChild.focus();
 }
 
-function submitAnswer(e) {
+async function submitAnswer(e) {
     answers.value.push(e.target.value);
 
     index.value++;
 
-    inputs.value[index.value].firstChild.focus();
+    await nextTick();
+    
+    if (!completed.value) {
+        inputs.value[index.value].firstChild.focus();
+    }
 }
 </script>
