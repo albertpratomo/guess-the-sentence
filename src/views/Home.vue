@@ -35,6 +35,8 @@
 
             <div v-if="completed">
                 Your answer: {{ answers.join(' ') }}
+                <br>
+                Your accuracy: {{ accuracy }}%
             </div>
         </template>
     </div>
@@ -51,8 +53,13 @@ const index = ref(1);
 const inputs = ref();
 const completed = computed(() => answers.value.length >= sentenceSplitted.value.length);
 
+const correctCount = ref(0);
+const accuracy = computed(() => (correctCount.value/(sentenceSplitted.value.length - 1) * 100));
+
 async function submitSentence() {
     sentenceSubmitted.value = true;
+
+    sentence.value = sentence.value.replace(/\s{2,}/g, ' ').trim().toLowerCase();
 
     answers.value = [sentenceSplitted.value[0]];
 
@@ -62,7 +69,13 @@ async function submitSentence() {
 }
 
 async function submitAnswer(e) {
-    answers.value.push(e.target.value);
+    const answer = e.target.value.trim().toLowerCase();
+
+    answers.value.push(answer);
+
+    if (answer == sentenceSplitted.value[index.value]) {
+        correctCount.value++;
+    }
 
     index.value++;
 
