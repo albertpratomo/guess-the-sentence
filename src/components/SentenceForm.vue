@@ -33,6 +33,7 @@
             </div>
 
             <button
+                ref="buttonNext"
                 class="btn-blue"
                 @click="$emit('submit', answersJoined, accuracy)"
             >
@@ -43,7 +44,7 @@
 </template>
 
 <script setup>
-import {computed, nextTick, ref} from 'vue';
+import {computed, nextTick, onMounted, ref} from 'vue';
 
 const props = defineProps({
     sentence: {
@@ -56,13 +57,14 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['submit']);
+defineEmits(['submit']);
 
 const sentenceSplitted = computed(() => props.sentence.split(' '));
 const answers = ref([sentenceSplitted.value[0]]);
 const answersJoined = computed(() => answers.value.join(' '));
 const index = ref(1);
 const inputs = ref();
+const buttonNext = ref();
 const completed = computed(() => answers.value.length >= sentenceSplitted.value.length);
 
 const correctCount = ref(0);
@@ -70,6 +72,8 @@ const accuracy = computed(() => (correctCount.value/(sentenceSplitted.value.leng
 
 async function submitAnswer(e) {
     const answer = e.target.value.trim().toLowerCase();
+
+    if (!answer) return;
 
     answers.value.push(answer);
 
@@ -83,6 +87,10 @@ async function submitAnswer(e) {
     
     if (!completed.value) {
         inputs.value[index.value].firstChild.focus();
+    } else {
+        buttonNext.value.focus();
     }
 }
+
+onMounted(() => inputs.value[index.value].firstChild.focus());
 </script>
