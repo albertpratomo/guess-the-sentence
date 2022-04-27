@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Guess from '../views/Guess.vue'
 import Home from '../views/Home.vue'
 
 const router = createRouter({
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/:type',
+      name: 'guess',
+      component: Guess
     },
   ]
 })
