@@ -7,6 +7,27 @@
             This link is invalid, please contact the research conductor.
         </div>
 
+        <div
+            v-else-if="!currentRecord"
+            class="flex-col items-center gap-4"
+        >
+            Voer de code in die je hebt gekregen
+
+            <input
+                v-model="answererId"
+                type="number"
+                placeholder="Code"
+            >
+
+            <button
+                class="btn-blue mt-12"
+                :disabled="!answererId"
+                @click="fetchRecords"
+            >
+                Next
+            </button>
+        </div>
+
         <RecordForm
             v-else-if="currentRecord"
             :key="currentRecord.id"
@@ -22,24 +43,10 @@ import RecordForm from '@/components/RecordForm.vue';
 import {computed, ref} from 'vue';
 import { useRoute } from 'vue-router';
 
-const BASE_ID = 'appeCRmidlJSZVW5Z';
-
-const TABLE_IDS = {
-    A: 'tblPtzhnTaiXZX1Qr',
-};
-
 const type = useRoute().params.type.toUpperCase();
+const typeInvalid = !['A', 'B', 'C', 'D'].includes(type);
 
-const answererId = '1';
-const answererCode = type + answererId;
-
-const typeInvalid = !(type in TABLE_IDS);
-
-Airtable.configure({
-    apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
-})
-
-const table = (Airtable.base(BASE_ID))(type);
+const answererId = ref();
 
 const records = ref();
 const index = ref(0);
@@ -49,11 +56,20 @@ const currentRecord = computed(() => {
     return records.value[index.value];
 });
 
-table.select({
-    filterByFormula: `{answererCode} = '${answererCode}'`,
-    pageSize: 20,
-    view: 'Grid view',
-}).firstPage((e, _records) => {
-    records.value = _records;
-});
+function fetchRecords() {
+    Airtable.configure({
+        apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
+    })
+
+    const BASE_ID = 'appeCRmidlJSZVW5Z';
+    const table = (Airtable.base(BASE_ID))(type);
+
+    table.select({
+        filterByFormula: `{answererCode} = '${type + answererId.value}'`,
+        pageSize: 20,
+        view: 'Grid view',
+    }).firstPage((e, _records) => {
+        records.value = _records;
+    });
+}
 </script>
