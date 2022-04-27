@@ -22,10 +22,22 @@
             </div>
         </div>
 
-        <div v-if="completed">
-            Your answer: {{ answers.join(' ') }}
-            <br>
-            Your accuracy: {{ accuracy }}%
+        <div
+            v-if="completed"
+            class="flex-col items-center gap-4"
+        >
+            <div v-if="showAnswer">
+                Your answer: {{ answersJoined }}
+                <br>
+                Your accuracy: {{ accuracy }}%
+            </div>
+
+            <button
+                class="btn-blue"
+                @click="$emit('submit', answersJoined, accuracy)"
+            >
+                Next
+            </button>
         </div>
     </div>
 </template>
@@ -37,11 +49,18 @@ const props = defineProps({
     sentence: {
         type: String,
         required: true,
-    }
+    },
+    showAnswer: {
+        type: Boolean,
+        default: false,
+    },
 });
+
+const emit = defineEmits(['submit']);
 
 const sentenceSplitted = computed(() => props.sentence.split(' '));
 const answers = ref([sentenceSplitted.value[0]]);
+const answersJoined = computed(() => answers.value.join(' '));
 const index = ref(1);
 const inputs = ref();
 const completed = computed(() => answers.value.length >= sentenceSplitted.value.length);

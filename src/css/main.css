@@ -6,4 +6,14 @@
     [type='text'] {
         @apply rounded-md;
     }
+    
+    .btn-blue {
+        @apply bg-blue-700 py-2.5 px-8 border-black text-white rounded-md border;
+    }
+}
+
+@layer utilities {
+    .flex-col {
+        @apply flex;
+    }
 }

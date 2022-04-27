@@ -7,17 +7,19 @@
             This link is invalid, please contact the research conductor.
         </div>
 
-        <SentenceForm
-            v-else
-            :sentence="sentence"
+        <RecordForm
+            v-else-if="currentRecord"
+            :key="currentRecord.id"
+            :record="currentRecord"
+            @submit="index++"
         />
     </div>
 </template>
 
 <script setup>
 import Airtable from 'airtable';
-import SentenceForm from '@/components/SentenceForm.vue';
-import {ref} from 'vue';
+import RecordForm from '@/components/RecordForm.vue';
+import {computed, ref} from 'vue';
 import { useRoute } from 'vue-router';
 
 const BASE_ID = 'appeCRmidlJSZVW5Z';
@@ -40,15 +42,18 @@ Airtable.configure({
 const table = (Airtable.base(BASE_ID))(type);
 
 const records = ref();
+const index = ref(0);
+const currentRecord = computed(() => {
+    if (!records.value) return;
+
+    return records.value[index.value];
+});
 
 table.select({
+    filterByFormula: `{answererCode} = '${answererCode}'`,
     pageSize: 20,
-    filterByFormula: `{answererCode} = '${answererCode}'`
+    view: 'Grid view',
 }).firstPage((e, _records) => {
     records.value = _records;
 });
-
-console.log(records.value);
-
-const sentence = ref('i am type ' + type);
 </script>
