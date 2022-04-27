@@ -11,7 +11,7 @@
             v-else-if="currentRecord"
             :key="currentRecord.id"
             :record="currentRecord"
-            @submit="index++"
+            @updated="index++"
         />
     </div>
 </template>

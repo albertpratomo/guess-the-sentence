@@ -1,5 +1,8 @@
 R<template>
-    <SentenceForm :sentence="sentence" />
+    <SentenceForm
+        :sentence="sentence"
+        @submit="updateRecord"
+    />
 </template>
 
 <script setup>
@@ -14,5 +17,15 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['updated']);
+
 const sentence = computed(() => props.record.get('sentence'));
+
+function updateRecord(answer, accuracy) {
+    const answeredAt = new Date;
+
+    props.record.updateFields({answer, accuracy, answeredAt});
+
+    emit('updated', answer, accuracy);
+}
 </script>
