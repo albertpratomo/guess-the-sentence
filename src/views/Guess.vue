@@ -4,14 +4,14 @@
             v-if="typeInvalid"
             class="text-center"
         >
-            This link is invalid, please contact the research conductor.
+            {{ $t('message.invalidLink') }}
         </div>
 
         <div
             v-else-if="!currentRecord"
             class="flex-col items-center gap-4"
         >
-            Voer de code in die je hebt gekregen
+            {{ $t('intro.fillYourCode') }}
 
             <input
                 v-model="answererId"
@@ -24,7 +24,7 @@
                 :disabled="!answererId"
                 @click="fetchRecords"
             >
-                Next
+                {{ $t('common.submit') }}
             </button>
         </div>
 
