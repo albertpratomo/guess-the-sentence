@@ -1,6 +1,21 @@
 <template>
-    <div class="flex flex-col gap-8 text-center">
-        Guess the sentence
+    <div class="flex flex-col gap-12 text-center">
+        <div
+            v-if="subtitle"
+            class="text-blue-700"
+        >
+            {{ subtitle }}
+        </div>
+        
+        <div>
+            <h2 class="font-bold">
+                {{ $t('guess.title') }}
+            </h2>
+            
+            <div class="">
+                {{ $t('guess.body') }}
+            </div>
+        </div>
 
         <div class="flex flex-wrap gap-4 items-center justify-center">
             <div
@@ -54,6 +69,10 @@ const props = defineProps({
     showAnswer: {
         type: Boolean,
         default: false,
+    },
+    subtitle: {
+        type: String,
+        default: undefined,
     },
 });
 
