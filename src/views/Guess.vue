@@ -1,12 +1,18 @@
 <template>
     <div class="container">
         <div
-            v-if="typeInvalid"
+            v-if="records.length && index === records.length"
             class="text-center"
         >
-            {{ $t('message.invalidLink') }}
+            <h1 class="font-bold">
+                {{ $t('finish.title') }}
+            </h1>
+            
+            <div>
+                {{ $t('finish.body') }}
+            </div>
         </div>
-
+        
         <div
             v-else-if="!currentRecord"
             class="flex-col items-center gap-4"
@@ -14,14 +20,14 @@
             {{ $t('intro.fillYourCode') }}
 
             <input
-                v-model="answererId"
-                type="number"
+                v-model="answererCode"
+                type="text"
                 placeholder="Code"
             >
 
             <button
                 class="btn-blue mt-12"
-                :disabled="!answererId"
+                :disabled="!answererCode"
                 @click="fetchRecords"
             >
                 {{ $t('common.submit') }}
@@ -31,6 +37,7 @@
         <RecordForm
             v-else-if="currentRecord"
             :key="currentRecord.id"
+            :subtitle="subtitle"
             :record="currentRecord"
             @updated="index++"
         />
@@ -41,19 +48,32 @@
 import Airtable from 'airtable';
 import RecordForm from '@/components/RecordForm.vue';
 import {computed, ref} from 'vue';
-import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
-const type = useRoute().params.type.toUpperCase();
-const typeInvalid = !['A', 'B', 'C', 'D'].includes(type);
+const {t} = useI18n();
 
-const answererId = ref();
+const answererCode = ref();
 
-const records = ref();
+const records = ref([]);
 const index = ref(0);
 const currentRecord = computed(() => {
     if (!records.value) return;
 
     return records.value[index.value];
+});
+
+const subtitle = computed(() => {
+    let text, number;
+    
+    if (index.value < 10) {
+        text = t('guess.subtitleStranger');
+        number = index.value + 1;
+    } else {
+        text = t('guess.subtitlePartner');
+        number = index.value - 9;
+    }
+
+    return `${text} ${number}/10`;
 });
 
 function fetchRecords() {
@@ -62,10 +82,11 @@ function fetchRecords() {
     })
 
     const BASE_ID = 'appeCRmidlJSZVW5Z';
+    const type = answererCode.value[0];
     const table = (Airtable.base(BASE_ID))(type);
 
     table.select({
-        filterByFormula: `{answererCode} = '${type + answererId.value}'`,
+        filterByFormula: `{answererCode} = '${answererCode.value}'`,
         pageSize: 20,
         view: 'Grid view',
     }).firstPage((e, _records) => {

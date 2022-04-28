@@ -4,18 +4,21 @@ export default {
         start: 'Start',
         submit: 'Submit',
     },
+    finish: {
+        title: 'Dit is het einde van het experiment 👋',
+        body: 'Bedankt voor het meedoen.',
+    },
     guess: {
-        subtitle: 'Zin',
-        title: 'Typ alstublieft een woord waarvan u denkt dat het als volgende zal verschijnen.',
         body: 'Druk op "enter" om naar het volgende woord te gaan.',
+        subtitlePartner: 'Zin van uw partner',
+        subtitleStranger: 'Zin van een vreemdeling',
+        title: 'Typ alstublieft een woord waarvan u denkt dat het als volgende zal verschijnen.',
+        invalidAnswererCode: 'Invalid code',
     },
     intro: {
-        body: 'In deze taak wordt u gevraagd om 10 zinnen te voorspellen die een vreemdeling heeft geschreven.\n\n Voor elke zin wordt alleen het eerste woord gegeven. U moet de volgende woorden één voor één raden totdat uw antwoorden een volledige zin vormen. Na elke woordinzending wordt het juiste antwoord (woord) onthuld. Het is onmogelijk om een ​​van de woorden over te slaan, maar willekeurige gissingen zijn toegestaan. Pas als het einde van de zin is bereikt, kun je naar de volgende zin gaan.\n\n Nadat u op de startknop hebt geklikt, krijgt u 3 oefenzinnen om ervoor te zorgen dat u de taak volledig begrijpt. Stel vragen aan de onderzoeker als je het nog steeds niet begrijpt.',
+        body: 'In deze taak dient u 20 zinnen af te maken: de eerste 10 zijn van een vreemde en de laatste 10 zijn van uw partner. \n\n Voor elke zin wordt alleen het eerste woord gegeven. U moet de volgende woorden één voor één raden totdat uw antwoorden een volledige zin vormen. Na elke woordinvoer wordt het juiste antwoord (woord) onthuld. Het is niet mogelijk om een woord over te slaan, maar raden is toegestaan. Pas als het einde van de zin is bereikt, kun je naar de volgende zin gaan. \n\n Nadat u op de startknop hebt geklikt, krijgt u 3 oefenzinnen om ervoor te zorgen dat u de opdracht volledig begrijpt. Zo niet, vraag de onderzoeker om verdere verduildelijking.',
         fillYourCode: 'Voer de code in die je hebt gekregen',
-        title: 'TASK 3A:  Het voorspellen van zinnen',
-    },
-    message: {
-        invalidLink: 'This link is invalid, please contact the research conductor.',
+        title: 'TASK 3:  Het voorspellen van zinnen',
     },
     practice: {
         sentences: [

@@ -38,6 +38,8 @@ import {computed, ref} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
+const router = useRouter();
+
 const {t, tm} = useI18n();
 
 const sentences = tm('practice.sentences');
@@ -52,9 +54,11 @@ const step = ref(-1);
 
 function nextSentence() {
     if (step.value === sentences.length - 1) {
-        useRouter().push({
+        router.push({
             name: 'guess',
         });
+    } else {
+        step.value++;
     }
 }
 </script>
