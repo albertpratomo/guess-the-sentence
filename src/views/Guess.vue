@@ -1,17 +1,10 @@
 <template>
     <div class="container">
-        <div
+        <FeedbackForm
             v-if="records.length && index === records.length"
-            class="text-center"
-        >
-            <h1 class="font-bold">
-                {{ $t('finish.title') }}
-            </h1>
-            
-            <div>
-                {{ $t('finish.body') }}
-            </div>
-        </div>
+            :answerer-code="answererCode"
+            :base="base"
+        />
         
         <div
             v-else-if="!currentRecord"
@@ -30,7 +23,7 @@
                 :disabled="!answererCode"
                 @click="fetchRecords"
             >
-                {{ $t('common.submit') }}
+                {{ $t('common.next') }}
             </button>
         </div>
 
@@ -47,11 +40,18 @@
 
 <script setup>
 import Airtable from 'airtable';
+import FeedbackForm from '@/components/FeedbackForm.vue';
 import RecordForm from '@/components/RecordForm.vue';
 import {computed, ref} from 'vue';
-import { useI18n } from 'vue-i18n';
+import {useI18n} from 'vue-i18n';
 
 const {t} = useI18n();
+
+Airtable.configure({
+    apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
+});
+const BASE_ID = 'appeCRmidlJSZVW5Z';
+const base = Airtable.base(BASE_ID);
 
 const answererCode = ref();
 
@@ -82,13 +82,8 @@ const subtitle = computed(() => {
 });
 
 function fetchRecords() {
-    Airtable.configure({
-        apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
-    })
-
-    const BASE_ID = 'appeCRmidlJSZVW5Z';
     const type = answererCode.value[0];
-    const table = (Airtable.base(BASE_ID))(type);
+    const table = base(type);
 
     table.select({
         filterByFormula: `{answererCode} = '${answererCode.value}'`,

@@ -1,8 +1,12 @@
 export default {
     common: {
-        next: 'Next',
+        next: 'Volgende',
         start: 'Start',
         submit: 'Submit',
+    },
+    feedback: {
+        question1: 'Wat vind je van het experiment?',
+        question2: 'Heeft u iets dat u ons wilt vertellen na het uitvoeren van het experiment?',
     },
     finish: {
         title: 'Dit is het einde van het experiment 👋',

@@ -49,11 +49,10 @@
 
             <button
                 ref="buttonNext"
+                v-t="'common.next'"
                 class="btn-blue"
                 @click="$emit('submit', answersJoined, accuracy)"
-            >
-                Next
-            </button>
+            />
         </div>
     </div>
 </template>
