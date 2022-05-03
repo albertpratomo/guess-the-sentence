@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-12 text-center">
         <div
             v-if="subtitle"
-            class="text-blue-700"
+            :class="subtitleClass"
         >
             {{ subtitle }}
         </div>
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div class="flex flex-wrap gap-4 items-center justify-center">
+        <div class="flex flex-wrap items-center justify-center gap-4">
             <div
                 v-for="(word, i) in sentenceSplitted"
                 :key="i"
@@ -73,6 +73,10 @@ const props = defineProps({
     subtitle: {
         type: String,
         default: undefined,
+    },
+    subtitleClass: {
+        type: String,
+        default: 'text-blue-700',
     },
 });
 

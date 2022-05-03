@@ -26,7 +26,7 @@
             >
 
             <button
-                class="btn-blue mt-12"
+                class="mt-12 btn-blue"
                 :disabled="!answererCode"
                 @click="fetchRecords"
             >
@@ -37,7 +37,8 @@
         <RecordForm
             v-else-if="currentRecord"
             :key="currentRecord.id"
-            :subtitle="subtitle"
+            :subtitle="subtitle.text"
+            :subtitle-class="subtitle.class"
             :record="currentRecord"
             @updated="index++"
         />
@@ -63,17 +64,21 @@ const currentRecord = computed(() => {
 });
 
 const subtitle = computed(() => {
-    let text, number;
+    let cssClass, number, text;
     
     if (index.value < 10) {
         text = t('guess.subtitleStranger');
         number = index.value + 1;
     } else {
+        cssClass = 'text-green-500';
         text = t('guess.subtitlePartner');
         number = index.value - 9;
     }
 
-    return `${text} ${number}/10`;
+    return {
+        class: cssClass,
+        text: `${text} ${number}/10`,
+    };
 });
 
 function fetchRecords() {
