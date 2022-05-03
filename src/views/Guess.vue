@@ -18,13 +18,14 @@
                 placeholder="Code"
             >
 
-            <button
+            <ButtonState
+                :loading="loading"
                 class="mt-12 btn-blue"
                 :disabled="!answererCode"
                 @click="fetchRecords"
             >
-                {{ $t('common.next') }}
-            </button>
+                <span v-t="'common.next'" />
+            </ButtonState>
         </div>
 
         <RecordForm
@@ -40,6 +41,7 @@
 
 <script setup>
 import Airtable from 'airtable';
+import ButtonState from '@/components/ButtonState.vue';
 import FeedbackForm from '@/components/FeedbackForm.vue';
 import RecordForm from '@/components/RecordForm.vue';
 import {computed, ref} from 'vue';
@@ -81,16 +83,21 @@ const subtitle = computed(() => {
     };
 });
 
+const loading = ref(false);
+
 function fetchRecords() {
     const type = answererCode.value[0];
     const table = base(type);
+
+    loading.value = true;
 
     table.select({
         filterByFormula: `{answererCode} = '${answererCode.value}'`,
         pageSize: 20,
         view: 'Grid view',
-    }).firstPage((e, _records) => {
-        records.value = _records;
-    });
+    }).firstPage(
+        (e, _records) => records.value = _records, 
+        () => loading.value = false,
+    );
 }
 </script>

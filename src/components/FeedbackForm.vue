@@ -29,16 +29,19 @@ R<template>
                 class="w-full"
             />
     
-            <button
-                v-t="'common.submit'"
+            <ButtonState
+                :loading="loading"
                 class="mt-8 btn-blue"
                 @click="submitFeedback"
-            />
+            >
+                <span v-t="'common.submit'" />
+            </ButtonState>
         </template>
     </div>
 </template>
 
 <script setup>
+import ButtonState from '@/components/ButtonState.vue';
 import {Base} from 'airtable';
 import {ref} from 'vue';
 
@@ -58,14 +61,21 @@ const feedback2 = ref();
 
 const finished = ref(false);
 
+const loading = ref(false);
+
 function submitFeedback() {
     const table = props.base('Feedbacks');
 
-    table.create({
-        answererCode: props.answererCode,
-        feedback1: feedback1.value,
-        feedback2: feedback2.value,
-    });
+    loading.value = true;
+
+    table.create(
+        {
+            answererCode: props.answererCode,
+            feedback1: feedback1.value,
+            feedback2: feedback2.value,
+        }, 
+        () => loading.value = false,
+    );
 
     finished.value = true;
 }
