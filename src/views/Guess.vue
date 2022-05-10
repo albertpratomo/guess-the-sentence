@@ -63,7 +63,11 @@ const index = ref(0);
 const currentRecord = computed(() => {
     if (!records.value) return;
 
-    return records.value[index.value];
+    const record = records.value[index.value];
+
+    return record && record.get('sentence') 
+        ? record
+        : undefined;
 });
 
 const subtitle = computed(() => {
