@@ -1,11 +1,17 @@
 <template>
-    <div class="flex flex-col gap-12 text-center">
+    <div class="flex flex-col items-center gap-12 text-center">
         <div
             v-if="subtitle"
             :class="subtitleClass"
         >
             {{ subtitle }}
         </div>
+
+        <img
+            v-if="image"
+            class="max-w-2xl"
+            :src="image"
+        >
         
         <div>
             <h2 class="font-bold">
@@ -61,6 +67,10 @@
 import {computed, nextTick, onMounted, ref} from 'vue';
 
 const props = defineProps({
+    image: {
+        type: String,
+        default: undefined,
+    },
     sentence: {
         type: String,
         required: true,

@@ -34,6 +34,7 @@
             :subtitle="subtitle.text"
             :subtitle-class="subtitle.class"
             :record="currentRecord"
+            :number="index+1"
             @updated="index++"
         />
     </div>
