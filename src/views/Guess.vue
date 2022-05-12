@@ -34,7 +34,7 @@
             :subtitle="subtitle.text"
             :subtitle-class="subtitle.class"
             :record="currentRecord"
-            :number="index+1"
+            :number="(index % 10)+1"
             @updated="index++"
         />
     </div>
